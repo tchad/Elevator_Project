@@ -1,0 +1,26 @@
+digraph finite_state_machine {
+	rankdir=LR;
+    graph [pad="0.2", nodesep="1", ranksep="1"];
+	node [shape = circle];
+    SELECT -> SELECT [ label = "SEL_LOOP_COND\n/-" ];
+	SELECT -> TRAV [ label = "SEL_TRAV_COND\n/-" ];
+	SELECT -> FLOOR [ label = "SEL_FLOOR_COND\n/-" ];
+    SELECT -> E_WAIT [ label = "E_ON=1/-" ];
+    TRAV -> TRAV [ label = "FA=0/TRAV=1" ];
+    TRAV -> FLOOR [ label = "FA=1/TRAV=0" ];
+    FLOOR -> FLOOR [ label = "FL_LOOP_COND\n/-" ];
+    FLOOR -> SELECT [ label = "FL_SEL_COND\n/-" ];
+    FLOOR -> DOOR [ label = "FL_DOOR_COND\n/FL_DOOR_OP" ];
+    DOOR -> DOOR [ label = "DC=0/-" ];
+    DOOR -> E_WAIT [ label = "DC=1 & E_ON=1/-" ];
+    DOOR -> SELECT [ label = "DC=1 & E_ON=0/-" ];
+    E_WAIT -> E_WAIT [ label = "E_ON=1\n & E_DIR = 00\n/-" ];
+    E_WAIT -> SELECT [ label = "E_ON=0/-" ];
+    E_WAIT -> E_FLOOR [ label = "E_WAIT_FLOOR_COND\n/-" ];
+    E_WAIT -> E_TRAV [ label = "E_ON=1\n & E_DIR = 00\n/-" ];
+    E_TRAV -> E_TRAV [ label = "FA=0/TRAV=1" ];
+    E_TRAV -> E_FLOOR [ label = "FA=1/TRAV=0" ];
+    E_FLOOR -> E_FLOOR [ label = "E_FL_LOOP_COND\n/-" ];
+    E_FLOOR -> E_WAIT [ label = "E_FL_WAIT_COND\n/-" ];
+    E_FLOOR -> DOOR [ label = "E_FL_DOOR_COND\n/-" ];
+}
